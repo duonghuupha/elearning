@@ -24,6 +24,36 @@ class Convert{
         return $pagination;
     }
 
+    function createLinks($total, $rows, $currentpage, $event, $links = 7) {
+        $last = ceil( $total / $rows );
+        $start = ( ( $currentpage - $links ) > 0 ) ? $currentpage - $links : 1;
+        $end = ( ( $currentpage + $links ) < $last ) ? $currentpage + $links : $last;
+
+        $html = '';
+        $class = ( $currentpage == 1 ) ? "active" : "";
+
+        if ( $start > 1 ) {
+            $html .= '<li class="paginate_button"><a aria-controls="example2" data-dt-idx="1" tabindex="0" href="javascript:void(0)" onclick="'.$event.'(1)">1</a></li>';
+            $html .= '<li class="paginate_button">';
+            $html .= '<a aria-controls="example2" data-dt-idx="1000" tabindex="0">...</a></li>';
+        }
+        for ( $i = $start ; $i <= $end; $i++ ) {
+            $class = ( $currentpage == $i ) ? "active" : "";
+            $html .= '<li class="paginate_button ' . $class . '">';
+            $html .= '<a aria-controls="example2" data-dt-idx="'.$i.'" tabindex="0" href="javascript:void(0)" onclick="'.$event.'('.$i.')">' . $i . '</a>';
+            $html .= '</li>';
+        }
+        if ( $end < $last ) {
+            $html .= '<li class="paginate_button">';
+            $html .= '<a aria-controls="example2" data-dt-idx="1000" tabindex="0">...</a></li>';
+            $html .= '<li>';
+            $html .= '<a aria-controls="example2" data-dt-idx="'.$last.'" tabindex="0" href="javascript:void(0)" onclick="'.$event.'('.$last.')">' . $last . '</a>';
+            $html .= '</li>';
+        }
+
+        return $html;
+    }
+
 	function createLinks_event($total, $rows, $currentpage, $event, $links = 7) {
         $last = ceil( $total / $rows );
         $start = ( ( $currentpage - $links ) > 0 ) ? $currentpage - $links : 1;
